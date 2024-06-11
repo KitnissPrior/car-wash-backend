@@ -78,7 +78,7 @@ app.MapControllerRoute(
 
 //тут запросы перенаправляются на разработческий сервер (car-wash-service)
 //перед развертыванием проекта убрать
-app.UseSpaYarp();
+//app.UseSpaYarp();
 
 app.MapFallbackToFile("index.html");
 
