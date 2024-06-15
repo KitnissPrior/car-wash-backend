@@ -31,7 +31,7 @@ public class OrderAccessor (CarWashContext db, OrderStatusAccessor statusAccesso
         var order = new Order()
         {
             OrderId = orderId,
-            DateTime = orderData.DateTime,
+            DateTime = DateOnly.FromDateTime(DateTime.Now),
             CarwashId = orderData.CarwashId,
             Carwash = carwashAccessor.GetById(orderData.CarwashId),
             UserId = orderData.UserId,
