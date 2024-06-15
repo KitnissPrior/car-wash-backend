@@ -26,6 +26,7 @@ public partial class Order
     [JsonIgnore]
     public virtual Carwash Carwash { get; set; } = null!;
     
+    [JsonIgnore]
     public virtual ICollection<ServicesInOrder> ServicesInOrders { get; set; } = new List<ServicesInOrder>();
     
     [JsonIgnore]
@@ -33,4 +34,5 @@ public partial class Order
 
     [JsonIgnore]
     public virtual User User { get; set; } = null!;
+    
 }

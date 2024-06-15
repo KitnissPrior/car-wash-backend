@@ -1,8 +1,9 @@
 ﻿using car_wash_backend.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace car_wash_backend.Services;
 
-public class BoxesInCarwashAccessor (CarWashContext db)
+public class BoxesInCarwashAccessor (CarWashContext db) : Controller
 {
     public IQueryable<BoxesInCarwash> GetAll()
     {

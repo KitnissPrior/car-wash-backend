@@ -6,7 +6,7 @@ namespace car_wash_backend.Models;
 
 public partial class ServicesInOrder
 {
-    public Guid ServiceId { get; set; }
+    public Guid? ServiceId { get; set; }
 
     public Guid OrderId { get; set; }
 

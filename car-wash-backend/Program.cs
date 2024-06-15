@@ -26,6 +26,7 @@ builder.Services.AddScoped<OrderStatusAccessor>();
 builder.Services.AddScoped<PersonAccessor>();
 builder.Services.AddScoped<RoleAccessor>();
 builder.Services.AddScoped<ServicesAccessor>();
+builder.Services.AddScoped<ServicesInOrderAccessor>();
 builder.Services.AddScoped<ServiceStatusAccessor>();
 builder.Services.AddScoped<UserAccessor>();
 

@@ -7,7 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 namespace car_wash_backend.Services;
 
 public class OrderAccessor (CarWashContext db, OrderStatusAccessor statusAccessor, 
-    CarwashAccessor carwashAccessor, UserAccessor userAccessor, BoxesInCarwashAccessor boxesInCarwashAccessor) : Controller
+    CarwashAccessor carwashAccessor, UserAccessor userAccessor, BoxesInCarwashAccessor boxesInCarwashAccessor,
+    ServicesInOrderAccessor servicesInOrderAccessor) : Controller
 {
     public IQueryable<Order> GetAll()
     {
@@ -22,13 +23,14 @@ public class OrderAccessor (CarWashContext db, OrderStatusAccessor statusAccesso
     
     public IActionResult Create(Order orderData)
     {
-        var orderID = Guid.NewGuid();
+        var orderId = Guid.NewGuid();
         var defaultStatus = statusAccessor.GetDefaultStatus();
         var availableBox = boxesInCarwashAccessor.GetAvailableBox(orderData.CarwashId);
+        if (availableBox == null) availableBox = new Box();
 
         var order = new Order()
         {
-            OrderId = orderID,
+            OrderId = orderId,
             DateTime = orderData.DateTime,
             CarwashId = orderData.CarwashId,
             Carwash = carwashAccessor.GetById(orderData.CarwashId),
@@ -36,16 +38,33 @@ public class OrderAccessor (CarWashContext db, OrderStatusAccessor statusAccesso
             User = userAccessor.GetById(orderData.UserId),
             StatusId = defaultStatus.StatusId,
             Status = defaultStatus,
-            BoxId = availableBox.BoxId,
+            BoxId = 1,
             Box = availableBox,
             LicencePlate = orderData.LicencePlate,    
         };
         
         db.Orders.Add(order);
         db.SaveChanges();
+
+        /*if (orderData.ServiceIds != null)
+        {
+            // Добавляем услуги в таблицу ServicesInOrder
+            foreach (var id in orderData.ServicesIds)
+            {
+                var serviceInOrderId = Guid.NewGuid();
+                var serviceInOrder = new ServicesInOrder()
+                {
+                    ServicesInOrderId = serviceInOrderId,
+                    ServiceId = id,
+                    OrderId = orderId,
+                };
+                db.ServicesInOrders.Add(serviceInOrder);
+            }
+            db.SaveChanges();
+        }*/
     
         // Получаем данные с помощью GetById и возвращаем их со статусом OK
-        var result = GetById(orderID);
+        var result = GetById(orderId);
         return Ok(result);
     }
 
@@ -60,12 +79,10 @@ public class OrderAccessor (CarWashContext db, OrderStatusAccessor statusAccesso
         
         updatedOrder.DateTime = orderData.DateTime;
         updatedOrder.CarwashId = orderData.CarwashId;
-        updatedOrder.Carwash = orderData.Carwash;
         updatedOrder.StatusId = defaultStatus.StatusId;
         updatedOrder.Status = defaultStatus;
         updatedOrder.LicencePlate = orderData.LicencePlate;
         updatedOrder.BoxId = availableBox.BoxId;
-        updatedOrder.Box = availableBox;
 
         db.SaveChanges();
         

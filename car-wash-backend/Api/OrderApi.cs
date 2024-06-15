@@ -1,4 +1,5 @@
-﻿using car_wash_backend.Models;
+﻿using car_wash_backend.Dto;
+using car_wash_backend.Models;
 using car_wash_backend.Services;
 
 namespace car_wash_backend.Api;
